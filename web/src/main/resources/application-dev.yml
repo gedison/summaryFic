@@ -1,5 +1,5 @@
 com.pastelpunk.summaryfic:
   database:
     hostname: localhost
-    port: 32784
+    port: 32769
     keyspace: mykeyspace

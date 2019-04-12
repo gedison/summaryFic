@@ -1,0 +1,12 @@
+com/pastelpunk/summaryfic/web/features/intake/processors/input/GetTaggedBooks.class
+com/pastelpunk/summaryfic/web/Application.class
+com/pastelpunk/summaryfic/web/features/intake/IntakeController.class
+com/pastelpunk/summaryfic/web/configuration/BaseConfiguration.class
+com/pastelpunk/summaryfic/web/features/intake/processors/input/CreateIntakeJob.class
+com/pastelpunk/summaryfic/web/features/intake/processors/download/DownloadBook.class
+com/pastelpunk/summaryfic/web/features/intake/IntakeConstants.class
+com/pastelpunk/summaryfic/web/configuration/SummaryFicConfig.class
+com/pastelpunk/summaryfic/web/util/FilterProcessor.class
+com/pastelpunk/summaryfic/web/features/intake/IntakeRoute.class
+com/pastelpunk/summaryfic/web/configuration/model/DatabaseConfig.class
+com/pastelpunk/summaryfic/web/exchange/RestExchange.class

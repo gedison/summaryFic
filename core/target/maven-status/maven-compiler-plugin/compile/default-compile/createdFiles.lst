@@ -1,0 +1,10 @@
+com/pastelpunk/summaryfic/core/models/Entity.class
+com/pastelpunk/summaryfic/core/models/Tag.class
+com/pastelpunk/summaryfic/core/features/intake/job/IntakeJobRepository.class
+com/pastelpunk/summaryfic/core/models/AO3TagKey.class
+com/pastelpunk/summaryfic/core/models/Book.class
+com/pastelpunk/summaryfic/core/features/intake/book/BookService.class
+com/pastelpunk/summaryfic/core/models/IntakeJob.class
+com/pastelpunk/summaryfic/core/models/Chapter.class
+com/pastelpunk/summaryfic/core/features/intake/book/BookRepository.class
+com/pastelpunk/summaryfic/core/features/intake/job/IntakeJobService.class

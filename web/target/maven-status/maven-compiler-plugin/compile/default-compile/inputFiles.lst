@@ -1,0 +1,12 @@
+/Users/admin/Documents/dev/java/summaryfic/web/src/main/java/com/pastelpunk/summaryfic/web/features/intake/processors/input/CreateIntakeJob.java
+/Users/admin/Documents/dev/java/summaryfic/web/src/main/java/com/pastelpunk/summaryfic/web/configuration/BaseConfiguration.java
+/Users/admin/Documents/dev/java/summaryfic/web/src/main/java/com/pastelpunk/summaryfic/web/configuration/model/DatabaseConfig.java
+/Users/admin/Documents/dev/java/summaryfic/web/src/main/java/com/pastelpunk/summaryfic/web/exchange/RestExchange.java
+/Users/admin/Documents/dev/java/summaryfic/web/src/main/java/com/pastelpunk/summaryfic/web/Application.java
+/Users/admin/Documents/dev/java/summaryfic/web/src/main/java/com/pastelpunk/summaryfic/web/features/intake/IntakeConstants.java
+/Users/admin/Documents/dev/java/summaryfic/web/src/main/java/com/pastelpunk/summaryfic/web/features/intake/processors/download/DownloadBook.java
+/Users/admin/Documents/dev/java/summaryfic/web/src/main/java/com/pastelpunk/summaryfic/web/util/FilterProcessor.java
+/Users/admin/Documents/dev/java/summaryfic/web/src/main/java/com/pastelpunk/summaryfic/web/features/intake/IntakeRoute.java
+/Users/admin/Documents/dev/java/summaryfic/web/src/main/java/com/pastelpunk/summaryfic/web/features/intake/processors/input/GetTaggedBooks.java
+/Users/admin/Documents/dev/java/summaryfic/web/src/main/java/com/pastelpunk/summaryfic/web/features/intake/IntakeController.java
+/Users/admin/Documents/dev/java/summaryfic/web/src/main/java/com/pastelpunk/summaryfic/web/configuration/SummaryFicConfig.java

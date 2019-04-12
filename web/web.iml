@@ -25,7 +25,39 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="core" scope="PROVIDED" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.logging.log4j:log4j-core:2.11.2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-api:2.11.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.projectlombok:lombok:1.18.6" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-core:3.0.0-M2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-util:3.0.0-M2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-api:3.0.0-M2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-management-api:3.0.0-M2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-base:3.0.0-M2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-support:3.0.0-M2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-browse:3.0.0-M2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-controlbus:3.0.0-M2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-dataformat:3.0.0-M2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-direct:3.0.0-M2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-directvm:3.0.0-M2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-file:3.0.0-M2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-language:3.0.0-M2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-log:3.0.0-M2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-properties:3.0.0-M2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-ref:3.0.0-M2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-rest:3.0.0-M2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-saga:3.0.0-M2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-scheduler:3.0.0-M2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-seda:3.0.0-M2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-stub:3.0.0-M2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-timer:3.0.0-M2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-validator:3.0.0-M2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-vm:3.0.0-M2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-xslt:3.0.0-M2" level="project" />
+    <orderEntry type="library" name="Maven: com.github.ben-manes.caffeine:caffeine:2.7.0" level="project" />
+    <orderEntry type="library" name="Maven: org.checkerframework:checker-qual:2.6.0" level="project" />
+    <orderEntry type="library" name="Maven: com.google.errorprone:error_prone_annotations:2.3.3" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-util-json:3.0.0-M2" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-web:2.1.4.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter:2.1.4.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot:2.1.4.RELEASE" level="project" />
@@ -87,8 +119,7 @@
     <orderEntry type="library" name="Maven: com.github.jnr:jnr-constants:0.9.9" level="project" />
     <orderEntry type="library" name="Maven: com.datastax.cassandra:cassandra-driver-mapping:3.5.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.8.5" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-core:2.11.2" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-api:2.11.2" level="project" />
+    <orderEntry type="library" name="Maven: org.jsoup:jsoup:1.11.3" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.26" level="project" />
   </component>
 </module>

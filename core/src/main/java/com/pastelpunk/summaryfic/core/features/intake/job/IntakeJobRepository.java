@@ -14,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class IntakeJobRepository {
 
@@ -33,19 +35,29 @@ public class IntakeJobRepository {
         this.create = session.prepare(CREATE);
     }
 
-    private static final String CREATE = "INSERT INTO intakeJob json ?";
+    private static final String CREATE = "INSERT INTO intakeJob " +
+            "(id, created, modified, deleted, tag, source, status, statusMessage) " +
+            "VALUES (?,toTimestamp(now()),toTimestamp(now()),false,?,?,?,?)";
 
     public void createIntakeJob(IntakeJob intakeJob) {
         BatchStatement batch = new BatchStatement();
-        batch.add(create.bind(gson.toJson(intakeJob)));
+        batch.add(create.bind(intakeJob.getId(), intakeJob.getTag(), intakeJob.getSource(),
+                intakeJob.getStatus(), intakeJob.getStatusMessage()));
         session.execute(batch);
     }
 
-    private static final String GET = "SELECT id, tag, source, status, statusMessage FROM intakeJob WHERE id = ?";
+    private static final String GET = "SELECT id, created, modified, tag, source, status, statusMessage FROM intakeJob WHERE id = ?";
 
     public IntakeJob getIntakeJob(String id){
         ResultSet resultSet = session.execute(GET, id);
         return mapper.map(resultSet).one();
+    }
+
+    private static final String GET_ALL = "SELECT id, created, modified, tag, source, status, statusMessage FROM intakeJob";
+
+    public List<IntakeJob> getIntakeJobs(){
+        ResultSet resultSet = session.execute(GET_ALL);
+        return mapper.map(resultSet).all();
     }
 
     private static final String UPDATE = "UPDATE intakeJob " +

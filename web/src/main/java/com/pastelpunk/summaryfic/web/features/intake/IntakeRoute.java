@@ -26,9 +26,9 @@ public class IntakeRoute extends RouteBuilder {
     public void configure() throws Exception {
 
         //Async web call
-        from("direct:startProcess")
-                .process(createIntakeJob)
-                .wireTap("direct:pollData");
+        from("direct:startIntake")
+                .process(createIntakeJob);
+                //.wireTap("direct:pollData");
 
         from("direct:pollData")
                 .process(getTaggedBooks)

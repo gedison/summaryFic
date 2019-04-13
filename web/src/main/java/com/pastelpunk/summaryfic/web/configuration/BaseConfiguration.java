@@ -30,10 +30,4 @@ public class BaseConfiguration {
         return new MappingManager(session);
     }
 
-
-    @Bean
-    public CamelContext camelContext(){
-        return new DefaultCamelContext();
-    }
-
 }

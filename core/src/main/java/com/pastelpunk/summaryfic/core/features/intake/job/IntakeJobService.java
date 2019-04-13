@@ -7,6 +7,7 @@ import org.apache.logging.log4j.core.util.UuidUtil;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Service
 public class IntakeJobService {
@@ -32,5 +33,9 @@ public class IntakeJobService {
 
     public IntakeJob updateIntakeJob(IntakeJob toUpdate){
         return intakeJobRepository.updateIntakeJob(toUpdate);
+    }
+
+    public List<IntakeJob> getIntakeJobs(){
+        return intakeJobRepository.getIntakeJobs();
     }
 }

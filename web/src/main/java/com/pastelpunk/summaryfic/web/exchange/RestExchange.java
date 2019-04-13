@@ -24,6 +24,8 @@ public class RestExchange<T,S> {
         exchange.getOut().setBody(output);
     }
 
+    public S getOutputObject(){ return (S) exchange.getOut().getBody(); }
+
     public void setOutputList(List<S> output){
         exchange.getOut().setBody(output);
     }

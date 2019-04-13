@@ -17,7 +17,7 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Set;
 
-@Service
+//@Service
 public class BookService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BookRepository.class);
@@ -33,8 +33,6 @@ public class BookService {
 
         books.forEach(book -> {
             book.setId(UuidUtil.getTimeBasedUuid().toString());
-            book.setCreated(new Timestamp(System.currentTimeMillis()));
-            book.setModified(new Timestamp(System.currentTimeMillis()));
             book.setDeleted(false);
         });
 

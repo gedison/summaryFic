@@ -1,10 +1,12 @@
 package com.pastelpunk.summaryfic.core.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class Tag {
 
-    private String key;
-    private String value;
+    private String tagKey;
+    private Object tagValue;
 }

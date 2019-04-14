@@ -29,7 +29,6 @@ public class GetTaggedBooks extends FilterProcessor {
 
     protected void postProcess(Exchange exchange, Exception e) throws Exception {
         LOGGER.info("Failed to get tagged books {}", e.getMessage(), e);
-
     }
 
     protected void execute(Exchange exchange) throws Exception {
@@ -38,7 +37,6 @@ public class GetTaggedBooks extends FilterProcessor {
 
         var url = "https://archiveofourown.org/tags/${tag}/works";
         url = url.replace("${tag}", UrlEscapers.urlFragmentEscaper().escape(tag));
-        LOGGER.info("Base url: {}", url);
 
         URL mUrl = new URL(url);
         URLConnection connection = mUrl.openConnection();
@@ -47,7 +45,7 @@ public class GetTaggedBooks extends FilterProcessor {
 
         var elements = Xsoup.compile("/html/body/div/div/div/ol[@class='pagination actions'][1]/li/a")
                 .evaluate(document).getElements();
-        int maxPage = 0;
+        var maxPage = 2;
         for (Element element : elements) {
             String text = element.text();
             try {
@@ -70,7 +68,6 @@ public class GetTaggedBooks extends FilterProcessor {
         }
 
         restExchange.setOutputList(output);
-
     }
 
     List<String> getOutput(Document document){
@@ -80,7 +77,6 @@ public class GetTaggedBooks extends FilterProcessor {
                 .evaluate(document).getElements();
 
         elements.forEach(element -> {
-            LOGGER.info("{}", element);
             String link = element.attributes().get("href");
             if(Objects.nonNull(link)){
                 output.add(link);

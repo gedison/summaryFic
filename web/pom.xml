@@ -58,7 +58,7 @@
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-core-starter</artifactId>
         </dependency>
-        <!-- Java 9/10 Fix -->
+        <!-- Camel Java 9/10 Fix -->
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
@@ -116,12 +116,15 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>${guava.version}</version>
         </dependency>
         <dependency>
             <groupId>us.codecraft</groupId>
             <artifactId>xsoup</artifactId>
             <version>0.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
         </dependency>
 
 

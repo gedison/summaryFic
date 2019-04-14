@@ -17,7 +17,7 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Set;
 
-//@Service
+@Service
 public class BookService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BookRepository.class);

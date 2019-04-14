@@ -5,16 +5,9 @@ import lombok.Data;
 
 @Data
 @Table(name = "chapter")
-public class Chapter extends Entity {
+public class Chapter{
 
-    private String intakeJobId;
-    private String bookId;
-    private String bookTitle;
-    private String bookAuthor;
-
-    private int order;
-    private String chapterTitle;
-    private String summary;
-    private String notes;
-    private String contents;
+    private int ordering;
+    private String description;
+    private String content;
 }

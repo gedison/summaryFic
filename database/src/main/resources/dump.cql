@@ -11,6 +11,29 @@ status text,
 statusMessage text,
 PRIMARY KEY (id, tag, source));
 
+CREATE TYPE tag (
+    tagKey text,
+    tagValue text);
+
+CREATE TYPE chapter (
+    ordering int,
+    description text,
+    content text);
+
+CREATE TABLE intakeJob(
+                          id text,
+                          created timestamp,
+                          modified timestamp,
+                          deleted boolean,
+                          intakeJobId text,
+                          title text,
+                          author text,
+                          updated timestamp,
+                          published timestamp,
+                          tags list<frozen<tag>>,
+                          chapters list<frozen<chapter>>,
+                          PRIMARY KEY (author, title));
+
 
 CREATE TYPE validationRecord (
     fieldName text,

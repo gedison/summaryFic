@@ -11,6 +11,7 @@ import org.apache.camel.builder.ExchangeBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -31,9 +32,9 @@ public class IntakeController {
     @Produce(uri = "direct:startIntake")
     private ProducerTemplate template;
 
-    @RequestMapping(value = "/source/{source}/tag/{tag}", method = RequestMethod.POST)
+    @RequestMapping(value = "/source/{source}", method = RequestMethod.POST)
     public ResponseEntity<IntakeJob> startIntake(@PathVariable("source") String source,
-                                                @PathVariable("tag")  String tag){
+                                                 @RequestBody String tag){
 
         Exchange exchange = new ExchangeBuilder(camelContext).build();
         exchange.getIn().setHeader(IntakeConstants.SEARCH_TAG, tag);

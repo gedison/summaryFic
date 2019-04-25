@@ -7,18 +7,7 @@
     <groupId>com.pastelpunk.summaryfic</groupId>
     <artifactId>web</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>10</source>
-                    <target>10</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+
 
     <parent>
         <groupId>com.pastelpunk</groupId>
@@ -27,6 +16,8 @@
     </parent>
 
     <packaging>jar</packaging>
+
+
 
 
     <dependencies>
@@ -94,6 +85,7 @@
             <artifactId>spring-core</artifactId>
         </dependency>
 
+
         <!-- Cassandra -->
         <dependency>
             <groupId>com.datastax.cassandra</groupId>
@@ -112,10 +104,6 @@
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
         </dependency>
         <dependency>
             <groupId>us.codecraft</groupId>
@@ -147,6 +135,26 @@
         </dependency>
 
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>10</source>
+                    <target>10</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+
+    </build>
+
+
 
 
 </project>

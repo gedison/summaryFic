@@ -1,11 +1,12 @@
-package com.pastelpunk.summaryfic.core.models;
+package com.pastelpunk.summaryfic.core.models.intake;
 
 import com.datastax.driver.mapping.annotations.Table;
+import com.pastelpunk.summaryfic.core.models.Entity;
 import lombok.Data;
 
 @Data
 @Table(name = "intakeJob")
-public class IntakeJob extends Entity{
+public class IntakeJob extends Entity {
 
     private String tag;
     private String source;

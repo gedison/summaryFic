@@ -1,7 +1,6 @@
-package com.pastelpunk.summaryfic.web.features.intake.input;
+package com.pastelpunk.summaryfic.web.features.intake.processors.input;
 
 import com.pastelpunk.summaryfic.web.features.intake.IntakeConstants;
-import com.pastelpunk.summaryfic.web.features.intake.processors.input.GetTaggedBooks;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.junit.jupiter.api.Test;

@@ -1,15 +1,13 @@
-package com.pastelpunk.summaryfic.web.features.intake.download;
+package com.pastelpunk.summaryfic.web.features.intake.processors.download;
 
 import com.pastelpunk.summaryfic.core.models.Book;
+import com.pastelpunk.summaryfic.core.models.intake.IntakeJobTask;
 import com.pastelpunk.summaryfic.web.features.intake.IntakeConstants;
-import com.pastelpunk.summaryfic.web.features.intake.processors.download.DownloadBook;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.logging.log4j.core.util.UuidUtil;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -33,9 +31,10 @@ public class DownloadBookTest {
     @Test
     public void test() throws Exception{
         var input = "/works/15376113";
-
-        when(in.getHeader(IntakeConstants.JOB_ID)).thenReturn(UuidUtil.getTimeBasedUuid().toString());
-        when(in.getBody()).thenReturn(input);
+        IntakeJobTask task = new IntakeJobTask();
+        task.setId(UuidUtil.getTimeBasedUuid().toString());
+        task.setUri(input);
+        when(in.getBody()).thenReturn(task);
 
         downloadBook.process(exchange);
 
@@ -48,9 +47,10 @@ public class DownloadBookTest {
     @Test
     public void test2() throws Exception{
         var input = "/works/18466000";
-
-        when(in.getHeader(IntakeConstants.JOB_ID)).thenReturn(UuidUtil.getTimeBasedUuid().toString());
-        when(in.getBody()).thenReturn(input);
+        IntakeJobTask task = new IntakeJobTask();
+        task.setId(UuidUtil.getTimeBasedUuid().toString());
+        task.setUri(input);
+        when(in.getBody()).thenReturn(task);
 
         downloadBook.process(exchange);
 

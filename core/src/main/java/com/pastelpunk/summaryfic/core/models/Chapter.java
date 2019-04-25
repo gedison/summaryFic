@@ -1,10 +1,11 @@
 package com.pastelpunk.summaryfic.core.models;
 
 import com.datastax.driver.mapping.annotations.Table;
+import com.datastax.driver.mapping.annotations.UDT;
 import lombok.Data;
 
 @Data
-@Table(name = "chapter")
+@UDT(keyspace = "summaryfic", name = "chapter")
 public class Chapter{
 
     private int ordering;

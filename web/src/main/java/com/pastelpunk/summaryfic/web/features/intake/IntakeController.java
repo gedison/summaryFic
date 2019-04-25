@@ -1,7 +1,7 @@
 package com.pastelpunk.summaryfic.web.features.intake;
 
-import com.pastelpunk.summaryfic.core.features.intake.job.IntakeJobService;
-import com.pastelpunk.summaryfic.core.models.IntakeJob;
+import com.pastelpunk.summaryfic.core.features.intake.job.IntakeJobRepository;
+import com.pastelpunk.summaryfic.core.models.intake.IntakeJob;
 import com.pastelpunk.summaryfic.web.exchange.RestExchange;
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
@@ -21,11 +21,11 @@ import java.util.List;
 @RequestMapping("api/v1/intake")
 public class IntakeController {
 
-    private IntakeJobService intakeJobService;
+    private IntakeJobRepository intakeJobRepository;
     private CamelContext camelContext;
 
-    public IntakeController(IntakeJobService intakeJobService, CamelContext camelContext){
-        this.intakeJobService = intakeJobService;
+    public IntakeController(IntakeJobRepository intakeJobRepository, CamelContext camelContext){
+        this.intakeJobRepository = intakeJobRepository;
         this.camelContext = camelContext;
     }
 
@@ -47,7 +47,7 @@ public class IntakeController {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public ResponseEntity<List<IntakeJob>> getIntakeJobs(){
-        List<IntakeJob> intakeJobs = intakeJobService.getIntakeJobs();
+        List<IntakeJob> intakeJobs = intakeJobRepository.getIntakeJobs();
         return ResponseEntity.ok(intakeJobs);
     }
 }

@@ -4,8 +4,8 @@ import com.pastelpunk.summaryfic.core.models.AO3TagKey;
 import com.pastelpunk.summaryfic.core.models.Book;
 import com.pastelpunk.summaryfic.core.models.Chapter;
 import com.pastelpunk.summaryfic.core.models.Tag;
+import com.pastelpunk.summaryfic.core.models.intake.IntakeJobTask;
 import com.pastelpunk.summaryfic.web.exchange.RestExchange;
-import com.pastelpunk.summaryfic.web.features.intake.IntakeConstants;
 import com.pastelpunk.summaryfic.web.util.FilterProcessor;
 import org.apache.camel.Exchange;
 import org.apache.commons.lang3.StringUtils;
@@ -44,10 +44,12 @@ public class DownloadBook extends FilterProcessor {
     }
 
     protected void execute(Exchange exchange) throws Exception {
-        RestExchange<String, Book> restExchange = new RestExchange<>(exchange);
+        RestExchange<IntakeJobTask, Book> restExchange = new RestExchange<>(exchange);
 
-        var intakeJobId = restExchange.get(IntakeConstants.JOB_ID).toString();
-        var uri = restExchange.getInputObject();
+        var intakeJob = restExchange.getInputObject();
+        var intakeJobId = intakeJob.getIntakeJobId();
+        var uri = intakeJob.getUri();
+
         var url = "https://archiveofourown.org"+uri;
 
         Book book = downloadBook(url);

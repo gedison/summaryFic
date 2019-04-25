@@ -6,12 +6,11 @@ import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.mapping.Mapper;
 import com.datastax.driver.mapping.MappingManager;
-import com.google.gson.Gson;
 import com.pastelpunk.summaryfic.core.features.intake.book.BookRepository;
-import com.pastelpunk.summaryfic.core.models.IntakeJob;
+import com.pastelpunk.summaryfic.core.models.intake.IntakeJob;
+import org.apache.logging.log4j.core.util.UuidUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,11 +18,10 @@ import java.util.List;
 @Repository
 public class IntakeJobRepository {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BookRepository.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(IntakeJobRepository.class);
 
     private final Session session;
     private final Mapper<IntakeJob> mapper;
-    private final Gson gson = new Gson();
 
     private final PreparedStatement create;
 
@@ -39,21 +37,25 @@ public class IntakeJobRepository {
             "(id, created, modified, deleted, tag, source, status, statusMessage) " +
             "VALUES (?,toTimestamp(now()),toTimestamp(now()),false,?,?,?,?)";
 
-    public void createIntakeJob(IntakeJob intakeJob) {
+    public IntakeJob createIntakeJob(IntakeJob intakeJob) {
         BatchStatement batch = new BatchStatement();
-        batch.add(create.bind(intakeJob.getId(), intakeJob.getTag(), intakeJob.getSource(),
+        String id = UuidUtil.getTimeBasedUuid().toString();
+        batch.add(create.bind(id, intakeJob.getTag(), intakeJob.getSource(),
                 intakeJob.getStatus(), intakeJob.getStatusMessage()));
         session.execute(batch);
+        return getIntakeJob(id);
     }
 
-    private static final String GET = "SELECT id, created, modified, tag, source, status, statusMessage FROM intakeJob WHERE id = ?";
+    private static final String GET = "SELECT id, created, modified, tag, source, status, statusMessage " +
+            "FROM intakeJob WHERE id = ?";
 
     public IntakeJob getIntakeJob(String id){
         ResultSet resultSet = session.execute(GET, id);
         return mapper.map(resultSet).one();
     }
 
-    private static final String GET_ALL = "SELECT id, created, modified, tag, source, status, statusMessage FROM intakeJob";
+    private static final String GET_ALL = "SELECT id, created, modified, tag, source, status, statusMessage " +
+            "FROM intakeJob";
 
     public List<IntakeJob> getIntakeJobs(){
         ResultSet resultSet = session.execute(GET_ALL);

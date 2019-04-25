@@ -1,8 +1,8 @@
 package com.pastelpunk.summaryfic.web.features.intake.processors.input;
 
-import com.pastelpunk.summaryfic.core.features.intake.job.IntakeJobService;
-import com.pastelpunk.summaryfic.core.models.IntakeJob;
-import com.pastelpunk.summaryfic.core.models.IntakeStatus;
+import com.pastelpunk.summaryfic.core.features.intake.job.IntakeJobRepository;
+import com.pastelpunk.summaryfic.core.models.intake.IntakeJob;
+import com.pastelpunk.summaryfic.core.models.intake.IntakeStatus;
 import com.pastelpunk.summaryfic.web.exchange.RestExchange;
 import com.pastelpunk.summaryfic.web.features.intake.IntakeConstants;
 import org.apache.camel.Exchange;
@@ -12,10 +12,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class CreateIntakeJob implements Processor {
 
-    private IntakeJobService intakeJobService;
+    private IntakeJobRepository intakeJobRepository;
 
-    public CreateIntakeJob(IntakeJobService intakeJobService){
-        this.intakeJobService = intakeJobService;
+    public CreateIntakeJob(IntakeJobRepository intakeJobRepository){
+        this.intakeJobRepository = intakeJobRepository;
     }
 
     @Override
@@ -30,8 +30,9 @@ public class CreateIntakeJob implements Processor {
         toCreate.setTag(searchTag);
         toCreate.setStatus(IntakeStatus.IN_PROGRESS.name());
 
-        toCreate = intakeJobService.createIntakeJob(toCreate);
+        toCreate = intakeJobRepository.createIntakeJob(toCreate);
         restExchange.set(IntakeConstants.JOB_ID, toCreate.getId());
+        restExchange.set(IntakeConstants.JOB, toCreate);
 
         restExchange.setOutputObject(toCreate);
         restExchange.syncHeaders();

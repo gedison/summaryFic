@@ -3,9 +3,7 @@ package com.pastelpunk.summaryfic.web.features.intake;
 import com.pastelpunk.summaryfic.web.features.intake.processors.cleanup.UpdateJobStatus;
 import com.pastelpunk.summaryfic.web.features.intake.processors.download.DownloadBook;
 import com.pastelpunk.summaryfic.web.features.intake.processors.download.PersistBook;
-import com.pastelpunk.summaryfic.web.features.intake.processors.input.CreateIntakeJob;
-import com.pastelpunk.summaryfic.web.features.intake.processors.input.GetTaggedBooks;
-import com.pastelpunk.summaryfic.web.features.intake.processors.input.PersistJobTasks;
+import com.pastelpunk.summaryfic.web.features.intake.processors.input.*;
 import org.apache.camel.builder.RouteBuilder;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
@@ -14,6 +12,7 @@ import org.springframework.stereotype.Component;
 public class IntakeRoute extends RouteBuilder {
 
     private final CreateIntakeJob createIntakeJob;
+    private final GetMaxPage getMaxPage;
     private final GetTaggedBooks getTaggedBooks;
     private final PersistJobTasks persistJobTasks;
     private final DownloadBook downloadBook;
@@ -21,6 +20,7 @@ public class IntakeRoute extends RouteBuilder {
     private final UpdateJobStatus updateJobStatus;
 
     public IntakeRoute(@NonNull CreateIntakeJob createIntakeJob,
+                       @NonNull GetMaxPage getMaxPage,
                        @NonNull GetTaggedBooks getTaggedBooks,
                        @NonNull PersistJobTasks persistJobTasks,
                        @NonNull DownloadBook downloadBook,
@@ -28,6 +28,7 @@ public class IntakeRoute extends RouteBuilder {
                        @NonNull UpdateJobStatus updateJobStatus){
 
         this.createIntakeJob = createIntakeJob;
+        this.getMaxPage = getMaxPage;
         this.getTaggedBooks = getTaggedBooks;
         this.persistJobTasks = persistJobTasks;
         this.downloadBook = downloadBook;
@@ -43,7 +44,13 @@ public class IntakeRoute extends RouteBuilder {
 
         from("direct:pollData")
                 .log("start intake")
-                .process(getTaggedBooks)
+                .process(getMaxPage)
+                .split(simple("${body}"))
+                .parallelProcessing()
+                .aggregationStrategy(new TaggedBookAggregationStrategy())
+                    .log("Getting tagged books")
+                    .process(getTaggedBooks)
+                .end()
                 .log("persist tasks")
                 .process(persistJobTasks)
                 .split(simple("${body}")).parallelProcessing()
@@ -51,8 +58,8 @@ public class IntakeRoute extends RouteBuilder {
                     .process(downloadBook)
                     .log("Persisting book")
                     .process(persistBook)
-                    .log("Finished split")
                 .end()
+                .log("Updating job status")
                 .process(updateJobStatus)
                 .log("Finished Process");
     }

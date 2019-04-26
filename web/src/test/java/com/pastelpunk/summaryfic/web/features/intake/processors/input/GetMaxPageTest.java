@@ -11,18 +11,18 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
-public class GetTaggedBooksTest {
+public class GetMaxPageTest {
 
-    private GetTaggedBooks getTaggedBooks;
+    private GetMaxPage getMaxPage;
 
     private Exchange exchange = mock(Exchange.class);
     private Message in = mock(Message.class);
     private Message out = mock(Message.class);
 
-    public GetTaggedBooksTest(){
+    public GetMaxPageTest(){
         when(exchange.getIn()).thenReturn(in);
         when(exchange.getOut()).thenReturn(out);
-        getTaggedBooks = new GetTaggedBooks();
+        getMaxPage = new GetMaxPage();
     }
 
     @Test
@@ -30,12 +30,12 @@ public class GetTaggedBooksTest {
         when(in.getHeader(IntakeConstants.SOURCE)).thenReturn("AO3");
         when(in.getHeader(IntakeConstants.SEARCH_TAG)).thenReturn("Simon Hurt");
 
-        getTaggedBooks.process(exchange);
+        getMaxPage.process(exchange);
 
         ArgumentCaptor<List> argumentCaptor = ArgumentCaptor.forClass(List.class);
         verify(out).setBody(argumentCaptor.capture());
 
-        List<String> output = argumentCaptor.getValue();
+        List<Integer> output = argumentCaptor.getValue();
         assertTrue(!output.isEmpty());
     }
 }

@@ -25,8 +25,10 @@ CREATE TABLE intakeJobTask
     uri           text,
     status        text,
     statusMessage text,
-    PRIMARY KEY (id, uri, source)
+    PRIMARY KEY (intakeJobId, uri, source)
 );
+
+create index intakeJobIdx on intakeJobTask(intakeJobId);
 
 CREATE TYPE tag (
     tagKey text,

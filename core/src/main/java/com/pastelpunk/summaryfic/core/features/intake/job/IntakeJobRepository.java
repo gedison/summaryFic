@@ -63,11 +63,12 @@ public class IntakeJobRepository {
     }
 
     private static final String UPDATE = "UPDATE intakeJob " +
-            "SET updated = toTimestamp(now()), status = ?, statusMessage = ? " +
-            "WHERE id = ?";
+            "SET modified = toTimestamp(now()), status = ?, statusMessage = ? " +
+            "WHERE id = ? AND tag = ? AND source = ?";
 
     public IntakeJob updateIntakeJob(IntakeJob toUpdate){
-        session.execute(UPDATE, toUpdate.getStatus(), toUpdate.getStatusMessage(), toUpdate.getId());
+        session.execute(UPDATE, toUpdate.getStatus(), toUpdate.getStatusMessage(),
+                toUpdate.getId(), toUpdate.getTag(), toUpdate.getSource());
         return toUpdate;
     }
 }

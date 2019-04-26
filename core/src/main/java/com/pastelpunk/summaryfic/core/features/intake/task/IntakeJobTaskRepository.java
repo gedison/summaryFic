@@ -49,28 +49,22 @@ public class IntakeJobTaskRepository {
         session.execute(batch);
     }
 
-    private static final String GET = "SELECT id, created, modified, source, uri, status, statusMessage " +
-            "FROM intakeJobTask WHERE id = ?";
+    private static final String GET_ALL = "SELECT id,intakeJobId, created, modified, source, uri, status, statusMessage " +
+            "FROM intakeJobTask WHERE intakeJobId = ?";
 
-    public IntakeJobTask getIntakeJob(String id){
-        ResultSet resultSet = session.execute(GET, id);
-        return mapper.map(resultSet).one();
-    }
-
-    private static final String GET_ALL = "SELECT id, created, modified, source, uri, status, statusMessage " +
-            "FROM intakeJobTask";
-
-    public List<IntakeJobTask> getIntakeJobTasks(){
-        ResultSet resultSet = session.execute(GET_ALL);
+    public List<IntakeJobTask> getIntakeJobTasks(String intakeJobId){
+        ResultSet resultSet = session.execute(GET_ALL, intakeJobId);
         return mapper.map(resultSet).all();
     }
 
     private static final String UPDATE = "UPDATE intakeJobTask " +
-            "SET updated = toTimestamp(now()), status = ?, statusMessage = ? " +
-            "WHERE id = ?";
+            "SET modified = toTimestamp(now()), status = ?, statusMessage = ? " +
+            "WHERE intakeJobId = ? AND uri = ? AND source = ?";
 
     public IntakeJobTask updateIntakeJobTask(IntakeJobTask toUpdate){
-        session.execute(UPDATE, toUpdate.getStatus(), toUpdate.getStatusMessage(), toUpdate.getId());
+        session.execute(UPDATE, toUpdate.getStatus(), toUpdate.getStatusMessage(), toUpdate.getIntakeJobId(),
+                toUpdate.getUri(), toUpdate.getSource());
+
         return toUpdate;
     }
 }

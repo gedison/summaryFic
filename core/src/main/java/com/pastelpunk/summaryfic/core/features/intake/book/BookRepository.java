@@ -5,16 +5,13 @@ import com.datastax.driver.core.PreparedStatement;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.mapping.Mapper;
 import com.datastax.driver.mapping.MappingManager;
-import com.google.gson.Gson;
-import com.pastelpunk.summaryfic.core.models.Book;
+import com.pastelpunk.summaryfic.core.models.raw.Book;
 import org.apache.logging.log4j.core.util.UuidUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
-import java.util.Set;
 
 @Repository
 public class BookRepository {
@@ -35,17 +32,9 @@ public class BookRepository {
 
     private static final String CREATE = "INSERT INTO book " +
             "(id, created, modified, deleted, intakeJobId," +
-            "title, author" +
-            ", updated, published" +
-            ", tags" +
-            ", chapters" +
-            ") " +
+            "title, author, updated, published, tags, chapters) " +
             "VALUES " +
-            "(?,toTimestamp(now()),toTimestamp(now()),false," +
-            "?,?" +
-            ",?" +
-            ",?" +
-            ",?,?,?)";
+            "(?, toTimestamp(now()), toTimestamp(now()), false, ?, ?, ?, ?, ?, ?, ?)";
 
     public void createBooks(Collection<Book> books) {
         BatchStatement batch = new BatchStatement();

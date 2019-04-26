@@ -1,5 +1,6 @@
 package com.pastelpunk.summaryfic.web.features.intake;
 
+import com.pastelpunk.summaryfic.web.features.intake.processors.cleanup.UpdateJobStatus;
 import com.pastelpunk.summaryfic.web.features.intake.processors.download.DownloadBook;
 import com.pastelpunk.summaryfic.web.features.intake.processors.download.PersistBook;
 import com.pastelpunk.summaryfic.web.features.intake.processors.input.CreateIntakeJob;
@@ -17,23 +18,25 @@ public class IntakeRoute extends RouteBuilder {
     private final PersistJobTasks persistJobTasks;
     private final DownloadBook downloadBook;
     private final PersistBook persistBook;
+    private final UpdateJobStatus updateJobStatus;
 
     public IntakeRoute(@NonNull CreateIntakeJob createIntakeJob,
                        @NonNull GetTaggedBooks getTaggedBooks,
                        @NonNull PersistJobTasks persistJobTasks,
                        @NonNull DownloadBook downloadBook,
-                       @NonNull PersistBook persistBook){
+                       @NonNull PersistBook persistBook,
+                       @NonNull UpdateJobStatus updateJobStatus){
 
         this.createIntakeJob = createIntakeJob;
         this.getTaggedBooks = getTaggedBooks;
         this.persistJobTasks = persistJobTasks;
         this.downloadBook = downloadBook;
         this.persistBook = persistBook;
+        this.updateJobStatus = updateJobStatus;
     }
 
     public void configure() throws Exception {
 
-        //Async web call
         from("direct:startIntake")
                 .process(createIntakeJob)
                 .wireTap("direct:pollData");
@@ -50,8 +53,7 @@ public class IntakeRoute extends RouteBuilder {
                     .process(persistBook)
                     .log("Finished split")
                 .end()
+                .process(updateJobStatus)
                 .log("Finished Process");
-
-
     }
 }

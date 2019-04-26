@@ -1,4 +1,4 @@
-package com.pastelpunk.summaryfic.core.models;
+package com.pastelpunk.summaryfic.core.models.raw;
 
 import lombok.Data;
 

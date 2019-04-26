@@ -1,11 +1,10 @@
-package com.pastelpunk.summaryfic.core.models;
+package com.pastelpunk.summaryfic.core.models.raw;
 
 import com.datastax.driver.mapping.annotations.Table;
 import lombok.Data;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @Data
 @Table(name = "book")

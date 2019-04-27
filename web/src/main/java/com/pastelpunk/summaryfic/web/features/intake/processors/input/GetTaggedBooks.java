@@ -7,6 +7,8 @@ import com.pastelpunk.summaryfic.web.util.FilterProcessor;
 import org.apache.camel.Exchange;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import us.codecraft.xsoup.Xsoup;
 
@@ -20,9 +22,13 @@ import java.util.Scanner;
 
 @Component
 public class GetTaggedBooks extends FilterProcessor {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(GetTaggedBooks.class);
+
     @Override
     protected void postProcess(Exchange exchange, Exception e) throws Exception {
-
+        LOGGER.info("Failed to retrieve input {}", e.getMessage());
+        throw e;
     }
 
     @Override

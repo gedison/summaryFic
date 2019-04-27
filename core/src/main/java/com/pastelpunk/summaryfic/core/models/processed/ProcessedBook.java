@@ -1,14 +1,15 @@
-package com.pastelpunk.summaryfic.core.models.raw;
+package com.pastelpunk.summaryfic.core.models.processed;
 
 import com.datastax.driver.mapping.annotations.Table;
+import com.pastelpunk.summaryfic.core.models.raw.Tag;
 import lombok.Data;
 
 import java.util.Date;
 import java.util.List;
 
 @Data
-@Table(name = "book")
-public class Book extends Entity{
+@Table(name = "processedBook")
+public class ProcessedBook {
 
     private String intakeJobId;
     private String source;
@@ -18,5 +19,5 @@ public class Book extends Entity{
     private Date updated;
     private Date published;
     private List<Tag> tags;
-    private List<Chapter> chapters;
+    private List<NGram> unigrams;
 }

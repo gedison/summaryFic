@@ -27,6 +27,8 @@ public class GetMaxPage extends FilterProcessor {
 
     protected void postProcess(Exchange exchange, Exception e) throws Exception {
         LOGGER.info("Failed to get tagged books {}", e.getMessage(), e);
+
+        throw e;
     }
 
     protected void execute(Exchange exchange) throws Exception {

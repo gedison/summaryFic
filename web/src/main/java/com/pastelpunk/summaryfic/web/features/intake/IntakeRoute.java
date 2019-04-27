@@ -38,6 +38,11 @@ public class IntakeRoute extends RouteBuilder {
 
     public void configure() throws Exception {
 
+        errorHandler(deadLetterChannel("direct:globalExceptionHandling"));
+
+        from("direct:globalExceptionHandling")
+                .log(this.exceptionMessage().toString());
+
         from("direct:startIntake")
                 .process(createIntakeJob)
                 .wireTap("direct:pollData");
@@ -58,8 +63,9 @@ public class IntakeRoute extends RouteBuilder {
                     .process(downloadBook)
                     .log("Persisting book")
                     .process(persistBook)
+                    .to("direct:preProcessBook")
                 .end()
-                .log("Updating job status")
+                .to("direct:aggregate")
                 .process(updateJobStatus)
                 .log("Finished Process");
     }

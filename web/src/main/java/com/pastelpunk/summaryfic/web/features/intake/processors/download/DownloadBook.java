@@ -31,6 +31,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
+//TODO - Refactor this class +
+// the other one that uses jsoup and update the route to allow other sources
 public class DownloadBook extends FilterProcessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DownloadBook.class);
@@ -55,20 +57,22 @@ public class DownloadBook extends FilterProcessor {
         intakeJob.setStatus(IntakeStatus.ERROR.name());
         intakeJob.setStatusMessage(e.getMessage());
         intakeJobTaskRepository.updateIntakeJobTask(intakeJob);
+
+        throw e;
     }
 
     protected void execute(Exchange exchange) throws Exception {
         RestExchange<IntakeJobTask, Book> restExchange = new RestExchange<>(exchange);
 
         var intakeJob = restExchange.getInputObject();
-        var intakeJobId = intakeJob.getIntakeJobId();
-        var uri = intakeJob.getUri();
         restExchange.set(IntakeConstants.JOB_STATUS, intakeJob);
 
-        var url = "https://archiveofourown.org"+uri;
-
+        var url = "https://archiveofourown.org"+intakeJob.getUri();
         Book book = downloadBook(url);
-        book.setIntakeJobId(intakeJobId);
+
+        book.setIntakeJobId(intakeJob.getIntakeJobId());
+        book.setSource(intakeJob.getSource());
+        book.setUri(intakeJob.getUri());
 
         restExchange.setOutputObject(book);
         restExchange.syncHeaders();
@@ -94,7 +98,6 @@ public class DownloadBook extends FilterProcessor {
 
         ret.setTitle(Xsoup.compile(TITLE_XML).evaluate(document).getElements().text());
         ret.setAuthor(Xsoup.compile(AUTHOR_XML).evaluate(document).getElements().text());
-
 
         var isSingleChapter = false;
         Element select = document.getElementById(CHAPTER_LIST_ID);

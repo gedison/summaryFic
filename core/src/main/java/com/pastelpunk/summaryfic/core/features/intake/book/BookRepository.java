@@ -31,19 +31,18 @@ public class BookRepository {
     }
 
     private static final String CREATE = "INSERT INTO book " +
-            "(id, created, modified, deleted, intakeJobId," +
+            "(id, created, modified, deleted, intakeJobId, source, uri, " +
             "title, author, updated, published, tags, chapters) " +
             "VALUES " +
-            "(?, toTimestamp(now()), toTimestamp(now()), false, ?, ?, ?, ?, ?, ?, ?)";
+            "(?, toTimestamp(now()), toTimestamp(now()), false, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     public void createBooks(Collection<Book> books) {
         BatchStatement batch = new BatchStatement();
         for(Book book : books) {
             batch.add(create.bind(UuidUtil.getTimeBasedUuid().toString(), book.getIntakeJobId(),
-                book.getTitle(), book.getAuthor()
-                    ,book.getUpdated(), book.getPublished()
-                    ,book.getTags()
-                    ,book.getChapters()
+                book.getSource(), book.getUri(), book.getTitle(),
+                book.getAuthor(),book.getUpdated(), book.getPublished(),
+                book.getTags(),book.getChapters()
             ));
         }
         session.execute(batch);

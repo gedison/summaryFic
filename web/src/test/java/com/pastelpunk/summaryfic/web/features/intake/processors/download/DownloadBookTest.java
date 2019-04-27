@@ -1,5 +1,6 @@
 package com.pastelpunk.summaryfic.web.features.intake.processors.download;
 
+import com.google.gson.Gson;
 import com.pastelpunk.summaryfic.core.features.intake.task.IntakeJobTaskRepository;
 import com.pastelpunk.summaryfic.core.models.raw.Book;
 import com.pastelpunk.summaryfic.core.models.intake.IntakeJobTask;
@@ -43,6 +44,8 @@ public class DownloadBookTest {
         verify(out).setBody(argumentCaptor.capture());
 
         Book output = argumentCaptor.getValue();
+        Gson gson = new Gson();
+        System.out.println(gson.toJson(output));
     }
 
     @Test

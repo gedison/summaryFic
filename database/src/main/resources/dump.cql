@@ -39,20 +39,43 @@ CREATE TYPE chapter (
     description text,
     content text);
 
-CREATE TABLE book
-(
+CREATE TABLE book(
     id          text,
     created     timestamp,
     modified    timestamp,
     deleted     boolean,
     intakeJobId text,
+    source        text,
+    uri           text,
     title       text,
     author      text,
     updated     timestamp,
     published   timestamp,
     tags        list<frozen<tag>>,
     chapters    list<frozen<chapter>>,
-    PRIMARY KEY (intakeJobId, author, title)
+    PRIMARY KEY (intakeJobId, source, uri)
+);
+
+CREATE TYPE ngram (
+    stringValue text,
+    count int,
+    n int);
+
+CREATE TABLE processedBook(
+                     id          text,
+                     created     timestamp,
+                     modified    timestamp,
+                     deleted     boolean,
+                     intakeJobId text,
+                     source        text,
+                     uri           text,
+                     title       text,
+                     author      text,
+                     updated     timestamp,
+                     published   timestamp,
+                     tags        list<frozen<tag>>,
+                     unigrams    list<frozen<ngram>>,
+                     PRIMARY KEY (intakeJobId, source, uri)
 );
 
 

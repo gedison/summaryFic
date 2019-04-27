@@ -29,7 +29,8 @@ public class PersistJobTasks extends FilterProcessor {
 
     @Override
     protected void postProcess(Exchange exchange, Exception e) throws Exception {
-
+        LOGGER.info("Failed to persist input {}", e.getMessage());
+        throw e;
     }
 
     @Override

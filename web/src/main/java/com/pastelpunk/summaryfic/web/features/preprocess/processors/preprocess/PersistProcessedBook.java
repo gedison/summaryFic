@@ -1,10 +1,10 @@
-package com.pastelpunk.summaryfic.web.features.intake.processors.download;
+package com.pastelpunk.summaryfic.web.features.preprocess.processors.preprocess;
 
-import com.pastelpunk.summaryfic.core.features.intake.book.BookRepository;
 import com.pastelpunk.summaryfic.core.features.intake.task.IntakeJobTaskRepository;
+import com.pastelpunk.summaryfic.core.features.preprocess.book.ProcessedBookRepository;
 import com.pastelpunk.summaryfic.core.models.intake.IntakeJobTask;
 import com.pastelpunk.summaryfic.core.models.intake.IntakeStatus;
-import com.pastelpunk.summaryfic.core.models.raw.Book;
+import com.pastelpunk.summaryfic.core.models.processed.ProcessedBook;
 import com.pastelpunk.summaryfic.web.exchange.RestExchange;
 import com.pastelpunk.summaryfic.web.features.intake.IntakeConstants;
 import com.pastelpunk.summaryfic.web.util.FilterProcessor;
@@ -16,26 +16,26 @@ import org.springframework.stereotype.Component;
 import java.util.Collections;
 
 @Component
-public class PersistBook extends FilterProcessor {
+public class PersistProcessedBook extends FilterProcessor {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PersistBook.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PersistProcessedBook.class);
 
-    private final BookRepository bookRepository;
+    private final ProcessedBookRepository processedBookRepository;
     private final IntakeJobTaskRepository intakeJobTaskRepository;
 
-    public PersistBook(BookRepository bookRepository,
-                       IntakeJobTaskRepository intakeJobTaskRepository){
-        this.bookRepository = bookRepository;
+    public PersistProcessedBook(ProcessedBookRepository processedBookRepository,
+                                IntakeJobTaskRepository intakeJobTaskRepository){
+        this.processedBookRepository = processedBookRepository;
         this.intakeJobTaskRepository = intakeJobTaskRepository;
     }
 
     @Override
     protected void postProcess(Exchange exchange, Exception e) throws Exception {
-        LOGGER.info("Failed to persist book {}", e.getMessage(), e);
+        LOGGER.info("Failed to persist pre-processed data {}", e.getMessage(), e);
 
-        RestExchange<Book, Void> restExchange = new RestExchange<>(exchange);
+        RestExchange<Void, Void> restExchange = new RestExchange<>(exchange);
         var intakeJob = (IntakeJobTask) restExchange.get(IntakeConstants.JOB_STATUS);
-        intakeJob.setStatus(IntakeStatus.ERROR.name());
+        intakeJob.setStatus(IntakeStatus.PREPROCESS_FAILED.name());
         intakeJob.setStatusMessage(e.getMessage());
         intakeJobTaskRepository.updateIntakeJobTask(intakeJob);
 
@@ -44,12 +44,12 @@ public class PersistBook extends FilterProcessor {
 
     @Override
     protected void execute(Exchange exchange) throws Exception {
-        RestExchange<Book, Void> restExchange = new RestExchange<>(exchange);
-        Book input = restExchange.getInputObject();
-        bookRepository.createBooks(Collections.singletonList(input));
+        RestExchange<ProcessedBook, Void> restExchange = new RestExchange<>(exchange);
+        ProcessedBook input = restExchange.getInputObject();
+        processedBookRepository.createBooks(Collections.singletonList(input));
 
         var intakeJob = (IntakeJobTask) restExchange.get(IntakeConstants.JOB_STATUS);
-        intakeJob.setStatus(IntakeStatus.DOWNLOAD_COMPLETE.name());
+        intakeJob.setStatus(IntakeStatus.PREPROCESS_COMPLETE.name());
         intakeJobTaskRepository.updateIntakeJobTask(intakeJob);
     }
 }

@@ -13,6 +13,7 @@ import org.apache.camel.Processor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class UpdateJobStatus implements Processor {
@@ -33,7 +34,8 @@ public class UpdateJobStatus implements Processor {
 
         List<IntakeJobTask> intakeJobTasks = intakeJobTaskRepository.getIntakeJobTasks(intakeJob.getId());
         var allTasksAreComplete =intakeJobTasks.stream()
-                .allMatch(intakeJobTask -> IntakeStatus.COMPLETE.name().equals(intakeJobTask.getStatus()));
+                .allMatch(intakeJobTask -> (Objects.nonNull(intakeJobTask.getStatus()) &&
+                        intakeJobTask.getStatus().contains(IntakeStatus.COMPLETE.name())));
 
         if(allTasksAreComplete){
             intakeJob.setStatus(IntakeStatus.COMPLETE.name());

@@ -21,7 +21,7 @@ public class PersistJobTasks extends FilterProcessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PersistJobTasks.class);
 
-    private IntakeJobTaskRepository intakeJobTaskRepository;
+    private final IntakeJobTaskRepository intakeJobTaskRepository;
 
     public PersistJobTasks(IntakeJobTaskRepository intakeJobTaskRepository){
         this.intakeJobTaskRepository = intakeJobTaskRepository;

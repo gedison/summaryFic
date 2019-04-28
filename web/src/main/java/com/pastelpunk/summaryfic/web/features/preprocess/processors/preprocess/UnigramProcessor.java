@@ -20,10 +20,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -60,20 +57,20 @@ public class UnigramProcessor extends FilterProcessor {
     protected void execute(Exchange exchange) throws Exception {
         RestExchange<Book, ProcessedBook> restExchange = new RestExchange<>(exchange);
         Book book = restExchange.getInputObject();
-        var input = book.getChapters().stream()
+        String input = book.getChapters().stream()
                 .map(Chapter::getContent)
                 .collect(Collectors.joining(" "));
 
-        List<String> output = analyze(input, analyzer);
+        var output = analyze(input, analyzer);
 
-        var unigrams = output.stream()
+        List<NGram> unigrams = output.stream()
                 .collect(Collectors.groupingBy(value -> value))
                 .entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, entrySet -> entrySet.getValue().size()))
                 .entrySet().stream().map(entrySet -> new NGram(entrySet.getKey(), entrySet.getValue(), 1))
-                .sorted(Comparator.comparingInt(NGram::getCount).reversed()).collect(Collectors.toList());
+                .collect(Collectors.toList());
 
-        ProcessedBook processedBook = new ProcessedBook();
+        var processedBook = new ProcessedBook();
         processedBook.setIntakeJobId(book.getIntakeJobId());
         processedBook.setSource(book.getSource());
         processedBook.setUri(book.getUri());
@@ -88,13 +85,13 @@ public class UnigramProcessor extends FilterProcessor {
         restExchange.syncHeaders();
     }
 
-    public List<String> analyze(String text, Analyzer analyzer) throws IOException {
-        List<String> result = new ArrayList<String>();
+    private ArrayList<String> analyze(String text, Analyzer analyzer) throws IOException {
+        var result = new ArrayList<String>();
         try(TokenStream tokenStream = analyzer.tokenStream("", text)) {
-            CharTermAttribute attr = tokenStream.addAttribute(CharTermAttribute.class);
+            var charTermAttribute = tokenStream.addAttribute(CharTermAttribute.class);
             tokenStream.reset();
             while (tokenStream.incrementToken()) {
-                result.add(attr.toString());
+                result.add(charTermAttribute.toString());
             }
         }
         return result;

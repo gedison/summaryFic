@@ -1,29 +1,23 @@
 package com.pastelpunk.summaryfic.web.features.preprocess.processors.aggregate;
 
 import com.datastax.driver.core.Row;
-import com.datastax.driver.mapping.Mapper;
-import com.datastax.driver.mapping.MappingManager;
 import com.pastelpunk.summaryfic.core.features.preprocess.book.ProcessedBookRepository;
+import com.pastelpunk.summaryfic.core.features.preprocess.book.ProcessedBookRowMapper;
 import com.pastelpunk.summaryfic.core.models.intake.IntakeJob;
 import com.pastelpunk.summaryfic.core.models.intake.IntakeJobTask;
-import com.pastelpunk.summaryfic.core.models.intake.IntakeStatus;
+import com.pastelpunk.summaryfic.core.models.processed.JobCorpus;
 import com.pastelpunk.summaryfic.core.models.processed.NGram;
-import com.pastelpunk.summaryfic.core.models.processed.ProcessedBook;
+import com.pastelpunk.summaryfic.core.models.raw.AO3TagKey;
 import com.pastelpunk.summaryfic.web.exchange.RestExchange;
 import com.pastelpunk.summaryfic.web.features.intake.IntakeConstants;
 import com.pastelpunk.summaryfic.web.util.FilterProcessor;
 import org.apache.camel.Exchange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.cassandra.core.convert.CassandraConverter;
-import org.springframework.data.cassandra.core.convert.MappingCassandraConverter;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 
 @Component
@@ -32,13 +26,11 @@ public class AggregateCounts extends FilterProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(AggregateCounts.class);
 
     private final ProcessedBookRepository processedBookRepository;
-    private final Mapper<ProcessedBook> mapper;
+    private final ProcessedBookRowMapper rowMapper = new ProcessedBookRowMapper();
 
-    public AggregateCounts(ProcessedBookRepository processedBookRepository,
-                           MappingManager mappingManager){
+    public AggregateCounts(ProcessedBookRepository processedBookRepository){
 
         this.processedBookRepository = processedBookRepository;
-        this.mapper = mappingManager.mapper(ProcessedBook.class);
     }
 
     @Override
@@ -48,24 +40,39 @@ public class AggregateCounts extends FilterProcessor {
 
     @Override
     protected void execute(Exchange exchange) throws Exception {
-        RestExchange<IntakeJobTask, Void> restExchange = new RestExchange<>(exchange);
+        RestExchange<IntakeJobTask, JobCorpus> restExchange = new RestExchange<>(exchange);
         var intakeJob = (IntakeJob) restExchange.get(IntakeConstants.JOB);
-        var unigramStream = processedBookRepository.getUnigramStream(intakeJob);
+        var bookStream = processedBookRepository.getProcessedBookStream(intakeJob);
 
-
-        unigramStream
-                .map(
-                        row -> {
-
-                            LOGGER.info("{}", row);
-                            return row;
-                        })
+        List<JobCorpus> collect = bookStream
+                .map(rowMapper::map)
+                .map(book -> book.getTags().stream()
+                        .filter(tag -> AO3TagKey.LANGUAGE.name().equalsIgnoreCase(tag.getTagKey()))
+                        .findFirst().map(tag -> new JobCorpus(tag.getTagValue(), book.getUnigrams()))
+                        .orElse(null)).filter(Objects::nonNull)
+                .collect(Collectors.groupingBy(JobCorpus::getLanguage))
+                .values().stream().map(
+                        entrySet -> entrySet.stream()
+                                .reduce(this::aggregateJobCorpus)
+                                .orElse(null))
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 
-        LOGGER.info("SDF");
+        restExchange.setOutputList(collect);
+        restExchange.syncHeaders();
     }
 
-    private List<NGram> getNGrams(Row row){
-        return row.getList(0, NGram.class);
+    private JobCorpus aggregateJobCorpus(JobCorpus a, JobCorpus b){
+        Map<NGram, NGram> aMap = a.getUnigrams().stream().collect(Collectors.toMap(value -> value, value -> value));
+        b.getUnigrams().forEach(unigram-> aMap.compute(unigram,
+                (k, v) -> Objects.isNull(v) ? unigram : compute(unigram, v)));
+        a.setUnigrams(new ArrayList<>(aMap.values()));
+        return a;
     }
+
+    private NGram compute(NGram a, NGram b){
+        a.setCount(a.getCount() + b.getCount());
+        return a;
+    }
+
 }

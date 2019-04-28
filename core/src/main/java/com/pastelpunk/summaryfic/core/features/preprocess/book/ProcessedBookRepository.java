@@ -57,7 +57,7 @@ public class ProcessedBookRepository {
             "intakeJobId, source, uri, title, author, updated, published, tags, unigrams " +
             "FROM processedBook WHERE intakeJobId = ?";
 
-    public Stream<Row> getUnigramStream(IntakeJob intakeJob){
+    public Stream<Row> getProcessedBookStream(IntakeJob intakeJob){
         ResultSet resultSet = session.execute(SELECT_ALL, intakeJob.getId());
 
 

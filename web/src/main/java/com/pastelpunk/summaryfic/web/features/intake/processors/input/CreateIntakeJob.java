@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CreateIntakeJob implements Processor {
 
-    private IntakeJobRepository intakeJobRepository;
+    private final IntakeJobRepository intakeJobRepository;
 
     public CreateIntakeJob(IntakeJobRepository intakeJobRepository){
         this.intakeJobRepository = intakeJobRepository;

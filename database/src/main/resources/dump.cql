@@ -78,5 +78,16 @@ CREATE TABLE processedBook(
                      PRIMARY KEY (intakeJobId, source, uri)
 );
 
+CREATE TABLE jobCorpus(
+                          id          text,
+                          created     timestamp,
+                          modified    timestamp,
+                          deleted     boolean,
+                          intakeJobId text,
+                          language    text,
+                          unigrams    list<frozen<ngram>>,
+                          PRIMARY KEY (intakeJobId, language)
+);
+
 
 

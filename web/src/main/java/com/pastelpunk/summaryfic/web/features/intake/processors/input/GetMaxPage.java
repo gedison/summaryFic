@@ -36,7 +36,9 @@ public class GetMaxPage extends FilterProcessor {
         var tag = restExchange.get(IntakeConstants.SEARCH_TAG).toString();
 
         var url = "https://archiveofourown.org/tags/${tag}/works";
-        url = url.replace("${tag}", UrlEscapers.urlFragmentEscaper().escape(tag));
+        var escapedTag = UrlEscapers.urlFragmentEscaper().escape(tag);
+        url = url.replace("${tag}", escapedTag);
+        LOGGER.info("Request URL {}", url);
 
         URL mUrl = new URL(url);
         URLConnection connection = mUrl.openConnection();

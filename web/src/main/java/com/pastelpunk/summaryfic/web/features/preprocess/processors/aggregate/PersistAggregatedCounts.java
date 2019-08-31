@@ -26,7 +26,7 @@ public class PersistAggregatedCounts extends FilterProcessor {
 
     @Override
     protected void postProcess(Exchange exchange, Exception e) throws Exception {
-        LOGGER.info("Failed to persist aggregated counts {}",e.getMessage(), e);
+        LOGGER.info("Failed to persist aggregated counts {}", e.getMessage(), e);
     }
 
     @Override

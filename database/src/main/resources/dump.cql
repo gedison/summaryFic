@@ -28,8 +28,6 @@ CREATE TABLE intakeJobTask
     PRIMARY KEY (intakeJobId, uri, source)
 );
 
-create index intakeJobIdx on intakeJobTask(intakeJobId);
-
 CREATE TYPE tag (
     tagKey text,
     tagValue text);
@@ -59,7 +57,8 @@ CREATE TABLE book(
 CREATE TYPE ngram (
     stringValue text,
     count int,
-    n int);
+    n int,
+    documentCount int);
 
 CREATE TABLE processedBook(
                      id          text,
@@ -85,9 +84,12 @@ CREATE TABLE jobCorpus(
                           deleted     boolean,
                           intakeJobId text,
                           language    text,
+                          documentCount int,
                           unigrams    list<frozen<ngram>>,
                           PRIMARY KEY (intakeJobId, language)
 );
+
+
 
 
 

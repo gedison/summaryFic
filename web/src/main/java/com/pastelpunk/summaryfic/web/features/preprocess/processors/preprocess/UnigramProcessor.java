@@ -49,8 +49,6 @@ public class UnigramProcessor extends FilterProcessor {
         intakeJob.setStatus(IntakeStatus.PREPROCESS_FAILED.name());
         intakeJob.setStatusMessage(e.getMessage());
         intakeJobTaskRepository.updateIntakeJobTask(intakeJob);
-
-        throw e;
     }
 
     @Override
@@ -67,7 +65,7 @@ public class UnigramProcessor extends FilterProcessor {
                 .collect(Collectors.groupingBy(value -> value))
                 .entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, entrySet -> entrySet.getValue().size()))
-                .entrySet().stream().map(entrySet -> new NGram(entrySet.getKey(), entrySet.getValue(), 1))
+                .entrySet().stream().map(entrySet -> new NGram(entrySet.getKey(), entrySet.getValue(), 1, 1))
                 .collect(Collectors.toList());
 
         var processedBook = new ProcessedBook();

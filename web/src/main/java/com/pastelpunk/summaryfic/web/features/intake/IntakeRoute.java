@@ -41,7 +41,8 @@ public class IntakeRoute extends RouteBuilder {
         errorHandler(deadLetterChannel("direct:globalExceptionHandling"));
 
         from("direct:globalExceptionHandling")
-                .log(this.exceptionMessage().toString());
+                .log(this.exceptionMessage().toString())
+                .process(e-> System.out.println(e.getException().getLocalizedMessage()));
 
         from("direct:startIntake")
                 .process(createIntakeJob)

@@ -11,7 +11,9 @@ public class NGram {
     @EqualsAndHashCode.Include
     String stringValue;
     @EqualsAndHashCode.Exclude
-    int count;
+    int count = 0;
     @EqualsAndHashCode.Include
     int n;
+    @EqualsAndHashCode.Exclude
+    int documentCount = 1;
 }

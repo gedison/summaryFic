@@ -44,19 +44,29 @@ public class AggregateCounts extends FilterProcessor {
         var intakeJob = (IntakeJob) restExchange.get(IntakeConstants.JOB);
         var bookStream = processedBookRepository.getProcessedBookStream(intakeJob);
 
-        List<JobCorpus> collect = bookStream
+         Map<String, List<JobCorpus>> languageMap = bookStream
                 .map(rowMapper::map)
                 .map(book -> book.getTags().stream()
                         .filter(tag -> AO3TagKey.LANGUAGE.name().equalsIgnoreCase(tag.getTagKey()))
                         .findFirst().map(tag -> new JobCorpus(tag.getTagValue(), book.getUnigrams()))
                         .orElse(null)).filter(Objects::nonNull)
-                .collect(Collectors.groupingBy(JobCorpus::getLanguage))
-                .values().stream().map(
+                .collect(Collectors.groupingBy(JobCorpus::getLanguage));
+
+         Map<String, Integer> counts =
+                 languageMap.entrySet().stream()
+                 .collect(Collectors.toMap(Map.Entry::getKey, es -> es.getValue().size()));
+
+        List<JobCorpus> collect = languageMap.values().stream().map(
                         entrySet -> entrySet.stream()
                                 .reduce(this::aggregateJobCorpus)
                                 .orElse(null))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
+
+        collect.forEach(jobCorpus->{
+            int count = counts.getOrDefault(jobCorpus.getLanguage(),0);
+            jobCorpus.setDocumentCount(count);
+        });
 
         restExchange.setOutputList(collect);
         restExchange.syncHeaders();
@@ -64,14 +74,14 @@ public class AggregateCounts extends FilterProcessor {
 
     private JobCorpus aggregateJobCorpus(JobCorpus a, JobCorpus b){
         Map<NGram, NGram> aMap = a.getUnigrams().stream().collect(Collectors.toMap(value -> value, value -> value));
-        b.getUnigrams().forEach(unigram-> aMap.compute(unigram,
-                (k, v) -> Objects.isNull(v) ? unigram : compute(unigram, v)));
+        b.getUnigrams().forEach(unigram-> aMap.compute(unigram, (k, v) -> Objects.isNull(v) ? unigram : compute(unigram, v)));
         a.setUnigrams(new ArrayList<>(aMap.values()));
         return a;
     }
 
     private NGram compute(NGram a, NGram b){
         a.setCount(a.getCount() + b.getCount());
+        a.setDocumentCount(a.getDocumentCount() + b.getDocumentCount());
         return a;
     }
 

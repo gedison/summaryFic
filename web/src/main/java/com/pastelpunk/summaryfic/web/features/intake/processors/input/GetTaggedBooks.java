@@ -38,7 +38,9 @@ public class GetTaggedBooks extends FilterProcessor {
 
         var tag = restExchange.get(IntakeConstants.SEARCH_TAG).toString();
         var url = "https://archiveofourown.org/tags/${tag}/works";
-        url = url.replace("${tag}", UrlEscapers.urlFragmentEscaper().escape(tag));
+        var escapedTag = UrlEscapers.urlFragmentEscaper().escape(tag);
+        escapedTag = escapedTag.replace(".", "*d*");
+        url = url.replace("${tag}", escapedTag);
 
         URL mUrl = new URL(url + "?page=" + pageNumber);
         URLConnection connection = mUrl.openConnection();

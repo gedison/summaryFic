@@ -57,8 +57,6 @@ public class DownloadBook extends FilterProcessor {
         intakeJob.setStatus(IntakeStatus.ERROR.name());
         intakeJob.setStatusMessage(e.getMessage());
         intakeJobTaskRepository.updateIntakeJobTask(intakeJob);
-
-        throw e;
     }
 
     protected void execute(Exchange exchange) throws Exception {

@@ -24,14 +24,11 @@ public class ProcessedBookRepository {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProcessedBookRepository.class);
 
     private final Session session;
-    private final Mapper<ProcessedBook> mapper;
 
     private final PreparedStatement create;
 
-    public ProcessedBookRepository(Session session,
-                                   MappingManager mappingManager) {
+    public ProcessedBookRepository(Session session) {
         this.session = session;
-        this.mapper = mappingManager.mapper(ProcessedBook.class);
         this.create = session.prepare(CREATE);
     }
 

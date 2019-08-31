@@ -38,8 +38,6 @@ public class PersistProcessedBook extends FilterProcessor {
         intakeJob.setStatus(IntakeStatus.PREPROCESS_FAILED.name());
         intakeJob.setStatusMessage(e.getMessage());
         intakeJobTaskRepository.updateIntakeJobTask(intakeJob);
-
-        throw e;
     }
 
     @Override

@@ -16,4 +16,5 @@ public class JobCorpus extends Entity {
     private String language;
     @NonNull
     private List<NGram> unigrams;
+    private int documentCount;
 }

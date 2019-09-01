@@ -48,6 +48,8 @@
         <junit.jupiter.version>5.5.0-M1</junit.jupiter.version>
         <junit.version>4.12</junit.version>
 
+        <swagger.version>2.9.2</swagger.version>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <start-class>com.pastelpunk.summaryfic.web.Application</start-class>
 
@@ -79,6 +81,19 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-core</artifactId>
                 <version>${spring.version}</version>
+            </dependency>
+
+            <!-- Swagger -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${swagger.version}</version>
             </dependency>
 
             <!-- Integration -->

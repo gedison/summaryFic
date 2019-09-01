@@ -6,9 +6,8 @@ import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.mapping.Mapper;
 import com.datastax.driver.mapping.MappingManager;
-import com.pastelpunk.summaryfic.core.features.preprocess.book.ProcessedBookRepository;
 import com.pastelpunk.summaryfic.core.models.intake.IntakeJob;
-import com.pastelpunk.summaryfic.core.models.processed.JobCorpus;
+import com.pastelpunk.summaryfic.core.models.processed.similarity.JobCorpus;
 import org.apache.logging.log4j.core.util.UuidUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,5 +53,14 @@ public class CorpusRepository {
     public JobCorpus getJobCorpus(String intakeJobId, String language){
         ResultSet resultSet = session.execute(SELECT, intakeJobId, language);
         return mapper.map(resultSet).one();
+    }
+
+    private static final String SELECT_ALL = "SELECT id, created, modified, deleted, " +
+            "intakeJobId, language, documentCount, unigrams FROM " +
+            "jobCorpus WHERE intakeJobId = ?";
+
+    public List<JobCorpus> getJobCorpus(String intakeJobId){
+        ResultSet resultSet = session.execute(SELECT_ALL, intakeJobId);
+        return mapper.map(resultSet).all();
     }
 }

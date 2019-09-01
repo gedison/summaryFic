@@ -1,12 +1,8 @@
 package com.pastelpunk.summaryfic.core.features.preprocess.book;
 
 import com.datastax.driver.core.*;
-import com.datastax.driver.mapping.Mapper;
-import com.datastax.driver.mapping.MappingManager;
-import com.pastelpunk.summaryfic.core.features.intake.book.BookRepository;
 import com.pastelpunk.summaryfic.core.models.intake.IntakeJob;
-import com.pastelpunk.summaryfic.core.models.processed.ProcessedBook;
-import com.pastelpunk.summaryfic.core.models.raw.Book;
+import com.pastelpunk.summaryfic.core.models.processed.similarity.ProcessedBook;
 import org.apache.logging.log4j.core.util.UuidUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

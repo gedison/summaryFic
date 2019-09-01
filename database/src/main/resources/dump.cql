@@ -90,6 +90,23 @@ CREATE TABLE jobCorpus(
 );
 
 
+CREATE TABLE reducedDimensionalityBook(
+                     id          text,
+                     created     timestamp,
+                     modified    timestamp,
+                     deleted     boolean,
+                     intakeJobId text,
+                     source        text,
+                     uri           text,
+                     title       text,
+                     author      text,
+                     updated     timestamp,
+                     published   timestamp,
+                     values      list<double>,
+                     PRIMARY KEY (intakeJobId, source, uri)
+);
+
+
 
 
 

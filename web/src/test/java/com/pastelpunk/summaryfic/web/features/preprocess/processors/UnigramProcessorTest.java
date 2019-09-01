@@ -2,7 +2,7 @@ package com.pastelpunk.summaryfic.web.features.preprocess.processors;
 
 
 import com.google.gson.Gson;
-import com.pastelpunk.summaryfic.core.models.processed.ProcessedBook;
+import com.pastelpunk.summaryfic.core.models.processed.similarity.ProcessedBook;
 import com.pastelpunk.summaryfic.core.models.raw.Book;
 import com.pastelpunk.summaryfic.web.features.preprocess.AnalyzerConfiguration;
 import com.pastelpunk.summaryfic.web.features.preprocess.processors.preprocess.UnigramProcessor;

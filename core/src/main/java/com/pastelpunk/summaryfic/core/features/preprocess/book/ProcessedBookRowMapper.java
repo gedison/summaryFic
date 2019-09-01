@@ -3,7 +3,7 @@ package com.pastelpunk.summaryfic.core.features.preprocess.book;
 import com.datastax.driver.core.Row;
 import com.pastelpunk.summaryfic.core.features.util.RowMapper;
 import com.pastelpunk.summaryfic.core.models.processed.NGram;
-import com.pastelpunk.summaryfic.core.models.processed.ProcessedBook;
+import com.pastelpunk.summaryfic.core.models.processed.similarity.ProcessedBook;
 import com.pastelpunk.summaryfic.core.models.raw.Tag;
 
 public class ProcessedBookRowMapper implements RowMapper<ProcessedBook> {

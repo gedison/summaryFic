@@ -2,8 +2,8 @@ package com.pastelpunk.summaryfic.web.features.process.similarity.lexicographic;
 
 import com.pastelpunk.summaryfic.web.features.process.similarity.lexicographic.processors.CalculateTFIDF;
 import com.pastelpunk.summaryfic.web.features.process.similarity.lexicographic.processors.GetJobCorpus;
+import com.pastelpunk.summaryfic.web.features.process.similarity.lexicographic.processors.PersistReducedDimensionalityBooks;
 import com.pastelpunk.summaryfic.web.features.process.similarity.lexicographic.processors.ReduceDimensionality;
-import com.pastelpunk.summaryfic.web.features.process.similarity.lexicographic.processors.ReduceDimensionality2;
 import org.apache.camel.builder.RouteBuilder;
 import org.springframework.stereotype.Component;
 
@@ -12,15 +12,18 @@ public class LexicographicSimilarityRoute extends RouteBuilder {
 
     private final GetJobCorpus getJobCorpus;
     private final CalculateTFIDF calculateTdIdf;
-    private final ReduceDimensionality2 reduceDimensionality;
+    private final ReduceDimensionality reduceDimensionality;
+    private final PersistReducedDimensionalityBooks persistReducedDimensionalityBooks;
 
     public LexicographicSimilarityRoute(GetJobCorpus getJobCorpus,
                                         CalculateTFIDF calculateTfIdf,
-                                        ReduceDimensionality2 reduceDimensionality){
+                                        ReduceDimensionality reduceDimensionality,
+                                        PersistReducedDimensionalityBooks persistReducedDimensionalityBooks){
 
         this.getJobCorpus = getJobCorpus;
         this.calculateTdIdf = calculateTfIdf;
         this.reduceDimensionality = reduceDimensionality;
+        this.persistReducedDimensionalityBooks = persistReducedDimensionalityBooks;
     }
 
     @Override
@@ -32,6 +35,7 @@ public class LexicographicSimilarityRoute extends RouteBuilder {
                 .process(getJobCorpus)
                 .process(calculateTdIdf)
                 .process(reduceDimensionality)
+                .process(persistReducedDimensionalityBooks)
                 .log("Finishing similarity");
     }
 }

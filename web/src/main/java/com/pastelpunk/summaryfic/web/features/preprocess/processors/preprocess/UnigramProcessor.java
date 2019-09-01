@@ -4,7 +4,7 @@ import com.pastelpunk.summaryfic.core.features.intake.task.IntakeJobTaskReposito
 import com.pastelpunk.summaryfic.core.models.intake.IntakeJobTask;
 import com.pastelpunk.summaryfic.core.models.intake.IntakeStatus;
 import com.pastelpunk.summaryfic.core.models.processed.NGram;
-import com.pastelpunk.summaryfic.core.models.processed.ProcessedBook;
+import com.pastelpunk.summaryfic.core.models.processed.similarity.ProcessedBook;
 import com.pastelpunk.summaryfic.core.models.raw.Book;
 import com.pastelpunk.summaryfic.core.models.raw.Chapter;
 import com.pastelpunk.summaryfic.web.exchange.RestExchange;

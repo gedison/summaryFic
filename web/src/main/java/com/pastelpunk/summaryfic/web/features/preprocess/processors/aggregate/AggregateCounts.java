@@ -1,11 +1,10 @@
 package com.pastelpunk.summaryfic.web.features.preprocess.processors.aggregate;
 
-import com.datastax.driver.core.Row;
 import com.pastelpunk.summaryfic.core.features.preprocess.book.ProcessedBookRepository;
 import com.pastelpunk.summaryfic.core.features.preprocess.book.ProcessedBookRowMapper;
 import com.pastelpunk.summaryfic.core.models.intake.IntakeJob;
 import com.pastelpunk.summaryfic.core.models.intake.IntakeJobTask;
-import com.pastelpunk.summaryfic.core.models.processed.JobCorpus;
+import com.pastelpunk.summaryfic.core.models.processed.similarity.JobCorpus;
 import com.pastelpunk.summaryfic.core.models.processed.NGram;
 import com.pastelpunk.summaryfic.core.models.raw.AO3TagKey;
 import com.pastelpunk.summaryfic.web.exchange.RestExchange;

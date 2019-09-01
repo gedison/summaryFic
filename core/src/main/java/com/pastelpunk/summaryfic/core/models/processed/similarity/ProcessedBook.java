@@ -1,6 +1,7 @@
-package com.pastelpunk.summaryfic.core.models.processed;
+package com.pastelpunk.summaryfic.core.models.processed.similarity;
 
 import com.datastax.driver.mapping.annotations.Table;
+import com.pastelpunk.summaryfic.core.models.processed.NGram;
 import com.pastelpunk.summaryfic.core.models.raw.Entity;
 import com.pastelpunk.summaryfic.core.models.raw.Tag;
 import lombok.Data;

@@ -2,7 +2,7 @@ package com.pastelpunk.summaryfic.web.features.preprocess.processors.aggregate;
 
 import com.pastelpunk.summaryfic.core.features.preprocess.corpus.CorpusRepository;
 import com.pastelpunk.summaryfic.core.models.intake.IntakeJob;
-import com.pastelpunk.summaryfic.core.models.processed.JobCorpus;
+import com.pastelpunk.summaryfic.core.models.processed.similarity.JobCorpus;
 import com.pastelpunk.summaryfic.web.exchange.RestExchange;
 import com.pastelpunk.summaryfic.web.features.intake.IntakeConstants;
 import com.pastelpunk.summaryfic.web.util.FilterProcessor;

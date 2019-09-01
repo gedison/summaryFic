@@ -4,11 +4,13 @@ import com.pastelpunk.summaryfic.web.features.intake.processors.cleanup.UpdateJo
 import com.pastelpunk.summaryfic.web.features.intake.processors.download.DownloadBook;
 import com.pastelpunk.summaryfic.web.features.intake.processors.download.PersistBook;
 import com.pastelpunk.summaryfic.web.features.intake.processors.input.*;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.builder.RouteBuilder;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class IntakeRoute extends RouteBuilder {
 
     private final CreateIntakeJob createIntakeJob;
@@ -42,7 +44,7 @@ public class IntakeRoute extends RouteBuilder {
 
         from("direct:globalExceptionHandling")
                 .log(this.exceptionMessage().toString())
-                .process(e-> System.out.println(e.getException().getLocalizedMessage()));
+                .process(e-> log.error("", e.getException()));
 
         from("direct:startIntake")
                 .process(createIntakeJob)

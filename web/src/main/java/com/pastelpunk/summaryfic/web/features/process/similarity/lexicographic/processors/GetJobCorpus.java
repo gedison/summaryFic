@@ -1,7 +1,7 @@
 package com.pastelpunk.summaryfic.web.features.process.similarity.lexicographic.processors;
 
 import com.pastelpunk.summaryfic.core.features.preprocess.corpus.CorpusRepository;
-import com.pastelpunk.summaryfic.core.models.processed.JobCorpus;
+import com.pastelpunk.summaryfic.core.models.processed.similarity.JobCorpus;
 import com.pastelpunk.summaryfic.web.exchange.RestExchange;
 import com.pastelpunk.summaryfic.web.features.intake.IntakeConstants;
 import org.apache.camel.Exchange;

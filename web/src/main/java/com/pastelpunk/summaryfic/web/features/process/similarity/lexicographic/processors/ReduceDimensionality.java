@@ -1,57 +1,60 @@
 package com.pastelpunk.summaryfic.web.features.process.similarity.lexicographic.processors;
 
-import com.pastelpunk.summaryfic.core.models.processed.ProcessedBook;
+import com.pastelpunk.summaryfic.core.models.processed.similarity.lexicographical.ProcessedBookVector;
 import com.pastelpunk.summaryfic.web.exchange.RestExchange;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
-import org.apache.spark.mllib.feature.PCA;
-import org.apache.spark.mllib.feature.PCAModel;
-import org.apache.spark.rdd.RDD;
+import org.apache.spark.mllib.linalg.SingularValueDecomposition;
+import org.apache.spark.mllib.linalg.distributed.RowMatrix;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import org.apache.spark.mllib.linalg.Matrix;
 import org.apache.spark.mllib.linalg.Vector;
-import org.apache.spark.mllib.linalg.Vectors;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class ReduceDimensionality implements Processor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReduceDimensionality.class);
 
+    private final SparkConf sparkConf;
+
+    public ReduceDimensionality(SparkConf sparkConf){
+        this.sparkConf = sparkConf;
+    }
+
     @Override
     public void process(Exchange exchange) throws Exception {
 
-        RestExchange<Map<ProcessedBook, Vector>, Void> restExchange = new RestExchange<>(exchange);
+        RestExchange<ProcessedBookVector, ProcessedBookVector> restExchange = new RestExchange<>(exchange);
 
-        Map<ProcessedBook, Vector> input = restExchange.getInputObject();
-        SparkConf conf = new SparkConf().setAppName("PCAExample").setMaster("local");
+        List<Vector> vectors = restExchange.getInputList().stream()
+                .map(ProcessedBookVector::getVector)
+                .collect(Collectors.toList());
 
-        try (JavaSparkContext sc = new JavaSparkContext(conf)) {
-            //Create points as Spark Vectors
-            List<Vector> vectors = new ArrayList<>(input.values());
-
-            //Create Spark MLLib RDD
+        List<Vector> reducedDimensionalityVectors = new ArrayList<>();
+        try (JavaSparkContext sc = new JavaSparkContext(sparkConf)) {
             JavaRDD<Vector> distData = sc.parallelize(vectors);
-            RDD<Vector> vectorRDD = distData.rdd();
-
-            //Execute PCA Projection to 2 dimensions
-            PCA pca = new PCA(2);
-            PCAModel pcaModel = pca.fit(vectorRDD);
-            Matrix matrix = pcaModel.pc();
-            matrix.rowIter().foreach(vector ->{
-                LOGGER.info(vector.toJson());
-                return vector;
-            });
+            RowMatrix mat = new RowMatrix(distData.rdd());
+            SingularValueDecomposition<RowMatrix, Matrix> svd = mat.computeSVD(2, true, 1.0E-9d);
+            reducedDimensionalityVectors = svd.U().rows().toJavaRDD().collect();
+        }catch (Exception e){
+            LOGGER.error("Failed to reduce {}", e.getMessage(), e);
         }
+
+        List<ProcessedBookVector> output = restExchange.getInputList();
+        for(int i=0; i<output.size(); i++){
+            output.get(i).setVector(reducedDimensionalityVectors.get(i));
+        }
+
+        restExchange.setOutputList(output);
     }
 }

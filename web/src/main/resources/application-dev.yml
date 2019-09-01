@@ -3,3 +3,4 @@ com.pastelpunk.summaryfic:
     hostname: localhost
     port: 32769
     keyspace: summaryfic
+

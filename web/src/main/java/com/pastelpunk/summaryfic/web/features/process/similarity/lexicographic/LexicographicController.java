@@ -1,8 +1,6 @@
 package com.pastelpunk.summaryfic.web.features.process.similarity.lexicographic;
 
-import com.pastelpunk.summaryfic.core.models.intake.IntakeJob;
-import com.pastelpunk.summaryfic.core.models.processed.LexicographicJob;
-import com.pastelpunk.summaryfic.web.exchange.RestExchange;
+import com.pastelpunk.summaryfic.core.models.processed.similarity.lexicographical.LexicographicJob;
 import com.pastelpunk.summaryfic.web.features.intake.IntakeConstants;
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
@@ -41,4 +39,6 @@ public class LexicographicController {
         //RestExchange<IntakeJob, IntakeJob> restExchange = new RestExchange<>(output);
         return ResponseEntity.ok("OK");
     }
+
+
 }

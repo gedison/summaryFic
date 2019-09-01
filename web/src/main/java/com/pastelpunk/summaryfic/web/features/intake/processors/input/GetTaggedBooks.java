@@ -40,6 +40,7 @@ public class GetTaggedBooks extends FilterProcessor {
         var url = "https://archiveofourown.org/tags/${tag}/works";
         var escapedTag = UrlEscapers.urlFragmentEscaper().escape(tag);
         escapedTag = escapedTag.replace(".", "*d*");
+        escapedTag = escapedTag.replace("/", "*s*");
         url = url.replace("${tag}", escapedTag);
 
         URL mUrl = new URL(url + "?page=" + pageNumber);

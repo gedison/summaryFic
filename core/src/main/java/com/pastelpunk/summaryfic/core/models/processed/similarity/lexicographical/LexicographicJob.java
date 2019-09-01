@@ -1,4 +1,4 @@
-package com.pastelpunk.summaryfic.core.models.processed;
+package com.pastelpunk.summaryfic.core.models.processed.similarity.lexicographical;
 
 import lombok.Data;
 

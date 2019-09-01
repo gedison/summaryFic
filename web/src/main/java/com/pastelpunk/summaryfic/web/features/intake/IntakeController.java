@@ -104,7 +104,6 @@ public class IntakeController {
     public ResponseEntity<String> getSimilarityCsv(@PathVariable("jobId") String jobId){
         List<ReducedDimensionalityBook> output = reducedDimensionalityBookRepository.getReducedDimensionalityBook(jobId);
         String stringOutput = output.stream()
-                .filter(v-> !v.getValues().stream().allMatch(d->d==0))
                 .map(book ->{
             List<String> values = new ArrayList<>();
             values.add(book.getTitle().replaceAll(",",""));
